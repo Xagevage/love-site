@@ -1,0 +1,1697 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Генератор Love Site — с игрой "Открой конверт" и 100 причинами любви
+"""
+
+import os
+from datetime import datetime
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# НАСТРОЙКИ
+# ═══════════════════════════════════════════════════════════════════════════════
+SITE_URL = "https://xagevage.github.io/love-site/"
+OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))
+START_DATE = "2023-05-28"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 100 ПРИЧИН ЛЮБВИ
+# ═══════════════════════════════════════════════════════════════════════════════
+REASONS = [
+    "Твои глаза, в которых я теряюсь.",
+    "Твоя улыбка, которая освещает всё вокруг.",
+    "Твой смех — самый заразительный звук на свете.",
+    "Твой голос, успокаивающий меня даже по телефону.",
+    "Твой взгляд, полный понимания и тепла.",
+    "Твоя нежность, которая меня обволакивает.",
+    "Твоя доброта ко всему живому.",
+    "Твой ум, с которым так интересно говорить.",
+    "Твоя внутренняя сила, которая меня восхищает.",
+    "Твоя честность, даже когда это трудно.",
+    "Твоё упорство в достижении целей.",
+    "Твоя забота, которой согреваются мои будни.",
+    "Твоя поддержка в любой момент.",
+    "Твоё безграничное терпение.",
+    "Твоя душевная теплота.",
+    "Твоя светлая душа.",
+    "Твоя ласка в каждом прикосновении.",
+    "Твои объятия, в которых мир становится на место.",
+    "Твои поцелуи, от которых перехватывает дыхание.",
+    "Твоя вера в меня, даже когда я сомневаюсь.",
+    "Твоя абсолютная искренность.",
+    "Твое чувство юмора.",
+    "Уют, который ты создаёшь вокруг себя.",
+    "Твоё спокойствие, которое меня уравновешивает.",
+    "Твоё умение понимать без слов.",
+    "Твоё молчание, которое бывает красноречивее слов.",
+    "Твой внутренний мир, в который ты меня пускаешь.",
+    "Твой неповторимый стиль.",
+    "Твоя природная харизма.",
+    "Твоя хрупкость, которую хочется беречь.",
+    "Твоя храбрость перед лицом трудностей.",
+    "Твоя чуткость к моему настроению.",
+    "Твоё природное очарование.",
+    "Твоя грация в движениях.",
+    "Как ты говоришь «привет», когда звонишь.",
+    "Твои «доброе утро», с которых начинается лучший день.",
+    "Твои милые и забавные привычки.",
+    "Твои мечты, которыми ты со мной делишься.",
+    "Интонации твоего голоса.",
+    "Прикосновение твоих губ.",
+    "Аромат твоих волос.",
+    "Твои руки, которые знают, как утешить.",
+    "Твои прикосновения, которые говорят больше слов.",
+    "Тепло твоего тела рядом.",
+    "Твоя смелость пробовать новое.",
+    "Искры в твоих глазах, когда ты чем-то увлечена.",
+    "Твои милые, безобидные капризы.",
+    "Твои слёзы, которые заставляют меня быть лучше.",
+    "Твоя безудержная радость, когда ты счастлива.",
+    "Твоя способность заботиться о других.",
+    "Твой говорящий, молчаливый взгляд.",
+    "Твоя дерзость и озорство.",
+    "Твои прямые и честные слова.",
+    "Твои милые странности, которые делают тебя уникальной.",
+    "Твой родной, успокаивающий запах.",
+    "Твой здоровый «пофигизм» к мелочам.",
+    "Звонкость твоего смеха.",
+    "Твой нежный шёпот на ушко.",
+    "Как ты получаешься на фотографиях — естественно и прекрасно.",
+    "Твоё сообщение «Соскучилась...»",
+    "Твоя ревность, в которой есть доля милого.",
+    "Твои маленькие, но такие важные подарки «просто так».",
+    "Твои сюрпризы, которые ты готовишь.",
+    "Твой вкус в музыке и кино.",
+    "Привычки, которые стали и моими.",
+    "Твои милые «глупости», которые веселят.",
+    "Доброта в твоих глазах.",
+    "Твои смешные, нелепые шутки.",
+    "Твой серьёзный тон, когда дело важное.",
+    "Твоя серьёзность в ответственные моменты.",
+    "Твоя лёгкость и беззаботность в отдыхе.",
+    "Твоя уязвимость, которую ты мне показываешь.",
+    "Твоя способность прощать.",
+    "Твоё стремление стать лучше.",
+    "Как ты выглядишь по утрам.",
+    "Как ты готовишь мой любимый кофе/чай.",
+    "Твоя преданность.",
+    "Твоё упрямство в отстаивании своего мнения.",
+    "Твоя любовь к жизни.",
+    "Как ты поддерживаешь мои увлечения.",
+    "Твоя искренность в проявлении чувств.",
+    "Как ты танцуешь, когда думаешь, что никто не видит.",
+    "Твоё чувство вкуса.",
+    "Твои смелые решения.",
+    "Спокойствие, которое я чувствую рядом с тобой.",
+    "Твоя мечтательность.",
+    "Твой тихий, милый храп, когда ты крепко спишь.",
+    "Твоя непредсказуемость.",
+    "Твои приколы «ни с того, ни с сего».",
+    "Твоя серьёзность в мелочах, которые для тебя важны.",
+    "Твоя спонтанность и авантюризм.",
+    "Твоё шёпотом «люблю», прежде чем уснуть.",
+    "Твоя гордость за свои достижения.",
+    "Твоё стремление к лучшему.",
+    "Твоя искренняя радость за мои успехи.",
+    "Твоё упрямство, которое иногда сводит с ума, но я люблю и его.",
+    "Наши душевные разговоры до самого утра.",
+    "Твоё умение промолчать вместо ссоры.",
+    "Просто всё, что в тебе есть.",
+    "Потому что ты — это ты. И моё сердце выбрало именно тебя."
+]
+
+# Формируем список причин для HTML
+reasons_html = ""
+for i, reason in enumerate(REASONS, 1):
+    reasons_html += f'<div class="reason-item" data-index="{i}"><span class="reason-num">{i}.</span> {reason}</div>\n'
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ГЕНЕРАЦИЯ HTML
+# ═══════════════════════════════════════════════════════════════════════════════
+HTML_CONTENT = f'''<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>❤️ 100 причин любить тебя</title>
+<style>
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+  background: #000;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+}}
+.screen {{
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  display: none; justify-content: center; align-items: center;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}}
+.screen.active {{ 
+  display: flex; 
+  opacity: 1;
+}}
+
+/* ===== КИНО-ЭФФЕКТ ===== */
+.cinema-overlay {{
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 999;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
+  opacity: 0;
+  transition: opacity 0.5s;
+}}
+.cinema-overlay.active {{ opacity: 1; }}
+.cinema-bars {{
+  position: fixed; left: 0; width: 100%; height: 60px;
+  background: #000; z-index: 1000;
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}}
+.cinema-bars.top {{ top: 0; transform: translateY(-100%); }}
+.cinema-bars.bottom {{ bottom: 0; transform: translateY(100%); }}
+.cinema-bars.active {{ transform: translateY(0); }}
+
+/* ===== СЧЁТЧИК ДНЕЙ ===== */
+#dayCounter {{
+  position: fixed; top: 20px; right: 20px;
+  color: #ff69b4; font-size: 14px;
+  text-shadow: 0 0 20px rgba(255,20,147,0.5);
+  z-index: 50;
+  background: rgba(0,0,0,0.6);
+  padding: 10px 18px;
+  border-radius: 25px;
+  border: 1px solid rgba(255,105,180,0.3);
+  backdrop-filter: blur(10px);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 1s;
+}}
+#dayCounter.show {{ opacity: 1; }}
+#dayCounter .num {{
+  font-size: 22px;
+  background: linear-gradient(90deg, #ff69b4, #ff1493);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}}
+
+/* ===== MATRIX ===== */
+#matrixCanvas {{
+  position: absolute; top: 0; left: 0; z-index: 1;
+  width: 100%; height: 100%;
+}}
+.flame-particles {{
+  position: absolute; z-index: 2;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}}
+.flame {{
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff4500, #ff0033);
+  box-shadow: 0 0 10px #ff4500;
+  animation: flameRise 3s linear infinite;
+}}
+@keyframes flameRise {{
+  0% {{ transform: translateY(100vh) scale(0); opacity: 0; }}
+  20% {{ opacity: 1; }}
+  80% {{ opacity: 1; }}
+  100% {{ transform: translateY(-50vh) scale(2); opacity: 0; }}
+}}
+
+#matrixHeart {{
+  position: relative; z-index: 10;
+  width: 220px; height: 200px;
+  cursor: pointer;
+  animation: pulse 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 60px rgba(255, 20, 147, 0.9));
+  transition: transform 0.3s;
+}}
+#matrixHeart:hover {{ transform: scale(1.12); }}
+#matrixHeart svg {{ width: 100%; height: 100%; }}
+#matrixHeart .click-text {{
+  position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%);
+  color: #ff69b4; font-size: 16px; white-space: nowrap;
+  text-shadow: 0 0 20px #ff1493; opacity: 0.9;
+  font-weight: 500;
+  animation: textPulse 2s ease-in-out infinite;
+}}
+@keyframes textPulse {{
+  0%, 100% {{ opacity: 0.6; }}
+  50% {{ opacity: 1; }}
+}}
+@keyframes pulse {{
+  0%, 100% {{ transform: scale(1); }}
+  50% {{ transform: scale(1.08); }}
+}}
+
+/* ===== ИСКРЫ ===== */
+.spark-container {{
+  position: absolute; z-index: 3;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}}
+.spark {{
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  animation: sparkFly 1s ease-out forwards;
+  pointer-events: none;
+}}
+@keyframes sparkFly {{
+  0% {{ transform: translate(0, 0) scale(1); opacity: 1; }}
+  100% {{ transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }}
+}}
+
+/* ===== ENVELOPE GAME ===== */
+#envelopeScreen {{
+  background: linear-gradient(135deg, #0a0505 0%, #1a0808 30%, #2d0f0f 60%, #1a0808 100%);
+  flex-direction: column;
+  padding: 20px;
+}}
+.envelope-container {{
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  aspect-ratio: 1/1.2;
+  cursor: pointer;
+  perspective: 1000px;
+}}
+.envelope {{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}}
+.envelope.open {{
+  transform: rotateY(180deg);
+}}
+.envelope-front, .envelope-back {{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}}
+.envelope-front {{
+  background: linear-gradient(145deg, #ff69b4, #ff1493);
+  box-shadow: 0 0 60px rgba(255,20,147,0.4);
+  border: 3px solid rgba(255,255,255,0.2);
+}}
+.envelope-front .heart-big {{
+  font-size: 80px;
+  animation: pulse 1.5s ease-in-out infinite;
+}}
+.envelope-front .envelope-text {{
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 15px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}}
+.envelope-front .click-hint {{
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+  margin-top: 10px;
+  animation: textPulse 2s ease-in-out infinite;
+}}
+
+.envelope-back {{
+  background: linear-gradient(145deg, #f5e6d3, #fff5f5);
+  transform: rotateY(180deg);
+  box-shadow: 0 0 60px rgba(255,20,147,0.2);
+  border: 2px solid rgba(255,20,147,0.2);
+  overflow: hidden;
+  padding: 20px;
+}}
+.envelope-back h2 {{
+  color: #8b0000;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  text-align: center;
+}}
+.envelope-back .subtitle {{
+  color: #ff69b4;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  text-align: center;
+  opacity: 0.7;
+}}
+
+#clickCounter {{
+  color: #ff69b4;
+  font-size: 1.2rem;
+  margin-top: 15px;
+  text-shadow: 0 0 20px rgba(255,20,147,0.3);
+}}
+#clickCounter .num {{
+  font-size: 2rem;
+  background: linear-gradient(90deg, #ff69b4, #ff1493);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}}
+
+/* ===== REASONS BOOK ===== */
+#reasonsScreen {{
+  background: linear-gradient(135deg, #0a0505 0%, #1a0808 30%, #2d0f0f 60%, #1a0808 100%);
+  flex-direction: column;
+  padding: 15px;
+  justify-content: center;
+}}
+.reasons-container {{
+  width: 95%;
+  max-width: 700px;
+  height: 80vh;
+  max-height: 700px;
+  background: linear-gradient(145deg, #f5e6d3 0%, #fff5f5 40%, #f5e6d3 100%);
+  border-radius: 16px;
+  box-shadow: 0 0 60px rgba(255,20,147,0.2);
+  padding: 20px 25px 15px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgba(255,20,147,0.2);
+  display: flex;
+  flex-direction: column;
+}}
+.reasons-header {{
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(255,20,147,0.2);
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}}
+.reasons-header h2 {{
+  color: #8b0000;
+  font-size: 1.4rem;
+}}
+.reasons-header .heart-deco {{
+  color: #ff69b4;
+}}
+.reasons-scroll {{
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}}
+.reasons-scroll::-webkit-scrollbar {{
+  width: 6px;
+}}
+.reasons-scroll::-webkit-scrollbar-track {{
+  background: rgba(255,105,180,0.1);
+  border-radius: 10px;
+}}
+.reasons-scroll::-webkit-scrollbar-thumb {{
+  background: linear-gradient(180deg, #ff69b4, #ff1493);
+  border-radius: 10px;
+}}
+.reason-item {{
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.3);
+  color: #4a1a1a;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  transition: all 0.3s;
+  border-left: 3px solid transparent;
+}}
+.reason-item:hover {{
+  background: rgba(255,105,180,0.15);
+  border-left-color: #ff69b4;
+}}
+.reason-item .reason-num {{
+  color: #ff69b4;
+  font-weight: 700;
+  margin-right: 6px;
+}}
+
+/* Кнопка в конце списка — ВИДНА ВСЯ! */
+#reasonsComplete {{
+  flex-shrink: 0;
+  margin-top: 10px;
+  padding: 14px 40px;
+  background: linear-gradient(90deg, #ff0033, #ff69b4);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-size: 1.15rem;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  box-shadow: 0 0 40px rgba(255,20,147,0.4);
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}}
+#reasonsComplete.show {{
+  opacity: 1;
+  transform: scale(1);
+}}
+#reasonsComplete:hover {{
+  transform: scale(1.05);
+  box-shadow: 0 0 60px rgba(255,20,147,0.6);
+}}
+
+/* ===== BOOK ===== */
+#bookScreen {{
+  background: linear-gradient(135deg, #0a0505 0%, #1a0808 30%, #2d0f0f 60%, #1a0808 100%);
+  flex-direction: column;
+  padding: 20px;
+}}
+.book-container {{
+  position: relative;
+  width: 95vw; max-width: 1200px;
+  height: 85vh; max-height: 750px;
+  perspective: 1500px;
+}}
+.book {{
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}}
+.page {{
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(145deg, #f5e6d3 0%, #fff5f5 40%, #f5e6d3 100%);
+  border-radius: 12px;
+  box-shadow: 0 0 60px rgba(255, 20, 147, 0.2), inset 0 0 80px rgba(139, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 15px;
+  padding: 25px;
+  opacity: 0;
+  transform: rotateY(-90deg);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  backface-visibility: hidden;
+  border: 2px solid rgba(255, 20, 147, 0.25);
+  overflow: hidden;
+}}
+.page.active {{
+  opacity: 1; transform: rotateY(0deg);
+}}
+.page.prev {{
+  opacity: 0; transform: rotateY(90deg);
+}}
+.page-item {{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
+  padding: 8px;
+  position: relative;
+  overflow: hidden;
+}}
+.page-item .sticker {{
+  position: absolute;
+  font-size: 20px;
+  animation: floatSticker 4s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 1;
+}}
+.page-img {{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  border: 3px solid #ff69b4;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  z-index: 2;
+  background: #333;
+  min-height: 80px;
+}}
+.page-img:hover {{
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(255,20,147,0.4);
+  z-index: 3;
+}}
+.page-caption {{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  color: white;
+  padding: 15px 10px 8px;
+  font-size: 0.8rem;
+  text-align: center;
+  font-weight: 600;
+  z-index: 2;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  border-radius: 0 0 8px 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}}
+.page-item:hover .page-caption {{
+  opacity: 1;
+}}
+.page-num {{
+  position: absolute; bottom: 8px; right: 15px;
+  color: #ff69b4; font-size: 0.9rem; font-weight: 600;
+  opacity: 0.5;
+  z-index: 10;
+}}
+@keyframes floatSticker {{
+  0%, 100% {{ transform: translateY(0) rotate(0deg) scale(1); }}
+  50% {{ transform: translateY(-15px) rotate(10deg) scale(1.1); }}
+}}
+
+.arrow {{
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 55px; height: 55px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 105, 180, 0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 26px; color: #ff69b4;
+  transition: all 0.4s; z-index: 20;
+  backdrop-filter: blur(8px);
+}}
+.arrow:hover {{
+  background: rgba(255, 20, 147, 0.25);
+  border-color: #ff1493; transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 0 30px rgba(255, 20, 147, 0.3);
+}}
+.arrow-left {{ left: -70px; }}
+.arrow-right {{ right: -70px; }}
+.arrow.hidden {{ opacity: 0; pointer-events: none; }}
+
+#bookHeartBtn {{
+  position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%) scale(0);
+  width: 80px; height: 73px; cursor: pointer;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.9));
+  z-index: 30;
+}}
+#bookHeartBtn.show {{ transform: translateX(-50%) scale(1); }}
+#bookHeartBtn:hover {{ transform: translateX(-50%) scale(1.15); }}
+#bookHeartBtn .btn-text {{
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -35%);
+  color: white; font-size: 10px; font-weight: bold; pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  text-align: center;
+  line-height: 1.2;
+}}
+
+/* ===== VIDEO ===== */
+#videoScreen {{ 
+  background: radial-gradient(ellipse at center, #1a0505 0%, #000 100%);
+  flex-direction: column;
+  gap: 10px;
+}}
+#videoScreen .video-wrapper {{
+  position: relative;
+  width: 90vw; max-width: 900px;
+}}
+#videoScreen video {{
+  width: 100%;
+  max-height: 80vh;
+  border-radius: 14px;
+  box-shadow: 0 0 70px rgba(255, 20, 147, 0.5);
+  border: 2px solid rgba(255, 20, 147, 0.3);
+}}
+.video-progress {{
+  color: #ff69b4;
+  font-size: 0.9rem;
+  text-shadow: 0 0 20px rgba(255,20,147,0.3);
+  opacity: 0.7;
+  margin-top: 5px;
+}}
+.video-progress span {{
+  color: #fff;
+  font-weight: bold;
+}}
+
+/* ===== FIREWORKS ===== */
+#fireworksCanvas {{ 
+  position: absolute; top: 0; left: 0; 
+  width: 100%; height: 100%;
+}}
+#finalText {{
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 2s ease;
+  pointer-events: none;
+}}
+#finalText.show {{
+  opacity: 1;
+}}
+#finalText .final-text {{
+  color: white;
+  font-size: 60px;
+  font-weight: bold;
+  text-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,0,0,0.6);
+  text-align: center;
+  animation: textGlow 2s ease-in-out infinite alternate;
+}}
+@keyframes textGlow {{
+  from {{ text-shadow: 0 0 20px rgba(255,255,255,0.8); }}
+  to {{ text-shadow: 0 0 40px rgba(255,255,255,1), 0 0 80px rgba(255,20,147,0.8); }}
+}}
+
+.floating-hearts {{
+  position: absolute; z-index: 5;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}}
+.floating-heart {{
+  position: absolute;
+  font-size: 20px;
+  animation: floatUp 8s linear infinite;
+  opacity: 0;
+}}
+@keyframes floatUp {{
+  0% {{ transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }}
+  20% {{ opacity: 0.7; }}
+  80% {{ opacity: 0.7; }}
+  100% {{ transform: translateY(-10vh) scale(0.5) rotate(360deg); opacity: 0; }}
+}}
+
+.floating-message {{
+  position: fixed;
+  pointer-events: none;
+  z-index: 100;
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff69b4;
+  text-shadow: 0 0 30px rgba(255,20,147,0.8), 0 0 60px rgba(255,20,147,0.4);
+  animation: messageFloat 2.5s ease-out forwards;
+}}
+@keyframes messageFloat {{
+  0% {{ transform: translateY(0) scale(0.5); opacity: 0; }}
+  30% {{ transform: translateY(-50px) scale(1.2); opacity: 1; }}
+  100% {{ transform: translateY(-200px) scale(1); opacity: 0; }}
+}}
+
+.zoom-overlay {{
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95);
+  z-index: 200;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease;
+}}
+.zoom-overlay.active {{ display: flex; }}
+.zoom-overlay img {{
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 0 80px rgba(255,20,147,0.3);
+  animation: zoomIn 0.4s ease;
+}}
+@keyframes zoomIn {{
+  from {{ transform: scale(0.8); opacity: 0; }}
+  to {{ transform: scale(1); opacity: 1; }}
+}}
+@keyframes fadeIn {{
+  from {{ opacity: 0; }}
+  to {{ opacity: 1; }}
+}}
+
+@media (max-width: 950px) {{
+  .arrow-left {{ left: 10px; }}
+  .arrow-right {{ right: 10px; }}
+  .arrow {{ width: 45px; height: 45px; font-size: 20px; }}
+  .page {{ padding: 15px; gap: 10px; }}
+  .page-caption {{ font-size: 0.7rem; padding: 10px 6px 5px; }}
+  #matrixHeart {{ width: 160px; height: 145px; }}
+  .envelope-front .heart-big {{ font-size: 50px; }}
+  .envelope-front .envelope-text {{ font-size: 1.1rem; }}
+  .reasons-container {{ height: 75vh; max-height: 600px; }}
+}}
+@media (max-width: 600px) {{
+  .page {{ padding: 10px; gap: 6px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }}
+  .page-img {{ min-height: 60px; border-width: 2px; }}
+  .page-caption {{ font-size: 0.6rem; padding: 8px 4px 4px; }}
+  .sticker {{ display: none; }}
+  #matrixHeart {{ width: 130px; height: 118px; }}
+  #matrixHeart .click-text {{ font-size: 13px; bottom: -40px; }}
+  #dayCounter {{ font-size: 11px; padding: 6px 12px; top: 10px; right: 10px; }}
+  #dayCounter .num {{ font-size: 16px; }}
+  .book-container {{ height: 70vh; }}
+  .reasons-container {{ height: 70vh; max-height: 500px; padding: 12px 15px; }}
+  .reasons-header h2 {{ font-size: 1.1rem; }}
+  .reason-item {{ font-size: 0.85rem; padding: 6px 8px; }}
+  .envelope-container {{ max-width: 350px; }}
+  .envelope-front .heart-big {{ font-size: 40px; }}
+  .envelope-front .envelope-text {{ font-size: 0.9rem; }}
+  #clickCounter .num {{ font-size: 1.5rem; }}
+  #finalText .final-text {{ font-size: 30px; }}
+  #reasonsComplete {{ font-size: 1rem; padding: 12px 25px; }}
+}}
+</style>
+</head>
+<body>
+
+<!-- ===== КИНО-ЭФФЕКТ ===== -->
+<div class="cinema-bars top" id="cinemaTop"></div>
+<div class="cinema-bars bottom" id="cinemaBottom"></div>
+<div class="cinema-overlay" id="cinemaOverlay"></div>
+
+<!-- ===== СЧЁТЧИК ДНЕЙ ===== -->
+<div id="dayCounter">
+  ❤️ Мы вместе <span class="num" id="daysCount">0</span> дней
+</div>
+
+<!-- ===== MATRIX SCREEN ===== -->
+<div id="matrixScreen" class="screen active">
+  <canvas id="matrixCanvas"></canvas>
+  <div class="flame-particles" id="flameParticles"></div>
+  <div class="spark-container" id="sparkContainer"></div>
+  
+  <div id="matrixHeart" onclick="showEnvelope()" onmouseenter="spawnSparks()">
+    <svg viewBox="0 0 100 90">
+      <defs>
+        <radialGradient id="mHeartGrad" cx="30%" cy="30%">
+          <stop offset="0%" stop-color="#ff69b4" id="heartColor1"/>
+          <stop offset="40%" stop-color="#ff1493" id="heartColor2"/>
+          <stop offset="100%" stop-color="#8b0000" id="heartColor3"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <path d="M50 85 C50 85, 10 55, 10 30 C10 15, 25 5, 40 15 C45 20, 50 25, 50 25 C50 25, 55 20, 60 15 C75 5, 90 15, 90 30 C90 55, 50 85, 50 85Z" 
+            fill="url(#mHeartGrad)" stroke="#ff69b4" stroke-width="1.5" filter="url(#glow)" id="heartPath"/>
+    </svg>
+    <div class="click-text">❤️ Нажми на сердце ❤️</div>
+  </div>
+</div>
+
+<!-- ===== ENVELOPE SCREEN ===== -->
+<div id="envelopeScreen" class="screen">
+  <div class="envelope-container" onclick="handleEnvelopeClick(event)">
+    <div class="envelope" id="envelope">
+      <div class="envelope-front">
+        <div class="heart-big">💌</div>
+        <div class="envelope-text">Письмо для тебя</div>
+        <div class="click-hint">👆 Кликай, чтобы открыть</div>
+      </div>
+      <div class="envelope-back">
+        <h2>❤️ 100 причин, почему я люблю тебя ❤️</h2>
+        <div class="subtitle">Кликай по конверту 100 раз!</div>
+        <div id="clickCounter">
+          Прогресс: <span class="num" id="clicksCount">0</span> / 100
+        </div>
+        <div style="margin-top: 10px; width: 80%; height: 8px; background: rgba(255,105,180,0.2); border-radius: 10px; overflow: hidden;">
+          <div id="progressBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #ff69b4, #ff1493); border-radius: 10px; transition: width 0.3s;"></div>
+        </div>
+        <div id="envelopeMessage" style="margin-top: 12px; color: #ff69b4; font-size: 0.9rem; min-height: 24px; text-align: center;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REASONS BOOK ===== -->
+<div id="reasonsScreen" class="screen">
+  <div class="reasons-container">
+    <div class="reasons-header">
+      <h2>❤️ 100 причин, почему я люблю тебя ❤️</h2>
+      <span class="heart-deco">💕</span>
+    </div>
+    <div class="reasons-scroll" id="reasonsScroll">
+      {reasons_html}
+    </div>
+    <button id="reasonsComplete" onclick="showBook()">❤️ Смотреть наши фото ❤️</button>
+  </div>
+</div>
+
+<!-- ===== BOOK SCREEN ===== -->
+<div id="bookScreen" class="screen">
+  <div class="book-container">
+    <div class="arrow arrow-left" onclick="prevPage()">◀</div>
+    <div class="book" id="book">
+      <!-- СТРАНИЦА 1: ФОТО 1-4 -->
+      <div class="page active" data-page="0">
+        <div class="page-item">
+          <div class="sticker" style="top:2px;left:2px;font-size:16px;">💕</div>
+          <img class="page-img" src="photos/photo_1_2026-07-18_03-15-06.jpg" alt="Фото 1" onclick="zoomImage(this)">
+          <div class="page-caption">Наше первое воспоминание</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="top:2px;right:2px;font-size:16px;">✨</div>
+          <img class="page-img" src="photos/photo_2_2026-07-18_03-14-40.jpg" alt="Фото 2" onclick="zoomImage(this)">
+          <div class="page-caption">Счастливые моменты</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="bottom:2px;left:2px;font-size:16px;">🌸</div>
+          <img class="page-img" src="photos/photo_2_2026-07-18_03-15-06.jpg" alt="Фото 3" onclick="zoomImage(this)">
+          <div class="page-caption">Твоя улыбка</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="bottom:2px;right:2px;font-size:16px;">💖</div>
+          <img class="page-img" src="photos/photo_3_2026-07-18_03-14-40.jpg" alt="Фото 4" onclick="zoomImage(this)">
+          <div class="page-caption">Вместе навсегда</div>
+        </div>
+        <div class="page-num">1 / 4</div>
+      </div>
+
+      <!-- СТРАНИЦА 2: ФОТО 5-8 -->
+      <div class="page" data-page="1">
+        <div class="page-item">
+          <div class="sticker" style="top:2px;left:2px;font-size:16px;">💗</div>
+          <img class="page-img" src="photos/photo_4_2026-07-18_03-14-40.jpg" alt="Фото 5" onclick="zoomImage(this)">
+          <div class="page-caption">Моя любовь</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="top:2px;right:2px;font-size:16px;">🌹</div>
+          <img class="page-img" src="photos/photo_5_2026-07-18_03-14-40.jpg" alt="Фото 6" onclick="zoomImage(this)">
+          <div class="page-caption">Ты — моё всё</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="bottom:2px;left:2px;font-size:16px;">💝</div>
+          <img class="page-img" src="photos/photo_6_2026-07-18_03-14-40.jpg" alt="Фото 7" onclick="zoomImage(this)">
+          <div class="page-caption">Наши приключения</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="bottom:2px;right:2px;font-size:16px;">🌟</div>
+          <img class="page-img" src="photos/photo_7_2026-07-18_03-14-40.jpg" alt="Фото 8" onclick="zoomImage(this)">
+          <div class="page-caption">Свет моей жизни</div>
+        </div>
+        <div class="page-num">2 / 4</div>
+      </div>
+
+      <!-- СТРАНИЦА 3: ФОТО 9-12 -->
+      <div class="page" data-page="2">
+        <div class="page-item">
+          <div class="sticker" style="top:2px;left:2px;font-size:16px;">💓</div>
+          <img class="page-img" src="photos/photo_8_2026-07-18_03-14-40.jpg" alt="Фото 9" onclick="zoomImage(this)">
+          <div class="page-caption">Сладкие моменты</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="top:2px;right:2px;font-size:16px;">🌈</div>
+          <img class="page-img" src="photos/photo_9_2026-07-18_03-14-40.jpg" alt="Фото 10" onclick="zoomImage(this)">
+          <div class="page-caption">Цвета нашей любви</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="bottom:2px;left:2px;font-size:16px;">💘</div>
+          <img class="page-img" src="photos/photo_10_2026-07-18_03-14-40.jpg" alt="Фото 11" onclick="zoomImage(this)">
+          <div class="page-caption">Судьба</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="bottom:2px;right:2px;font-size:16px;">💟</div>
+          <img class="page-img" src="photos/photo_11_2026-07-18_03-14-40.jpg" alt="Фото 12" onclick="zoomImage(this)">
+          <div class="page-caption">Бесконечность</div>
+        </div>
+        <div class="page-num">3 / 4</div>
+      </div>
+
+      <!-- СТРАНИЦА 4: ФОТО 13-16 -->
+      <div class="page" data-page="3">
+        <div class="page-item">
+          <div class="sticker" style="top:2px;left:2px;font-size:16px;">❤️</div>
+          <img class="page-img" src="photos/photo_12_2026-07-18_03-14-40.jpg" alt="Фото 13" onclick="zoomImage(this)">
+          <div class="page-caption">Навсегда вместе</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="top:2px;right:2px;font-size:16px;">💫</div>
+          <img class="page-img" src="photos/photo_13_2026-07-18_03-14-40.jpg" alt="Фото 14" onclick="zoomImage(this)">
+          <div class="page-caption">Мой космос</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="bottom:2px;left:2px;font-size:16px;">❤️‍🔥</div>
+          <img class="page-img" src="photos/photo_2026-03-01_08-46-26.jpg" alt="Фото 15" onclick="zoomImage(this)">
+          <div class="page-caption">Вечная любовь</div>
+        </div>
+        <div class="page-item">
+          <div class="sticker" style="bottom:2px;right:2px;font-size:16px;">💕</div>
+          <img class="page-img" src="photos/photo_1_2026-07-18_03-14-40.jpg" alt="Фото 16" onclick="zoomImage(this)">
+          <div class="page-caption">Ты — моя жизнь ❤️</div>
+        </div>
+        <div class="page-num">4 / 4</div>
+      </div>
+    </div>
+    <div class="arrow arrow-right" onclick="nextPage()">▶</div>
+
+    <div id="bookHeartBtn" onclick="showFirstVideo()">
+      <svg viewBox="0 0 100 90">
+        <defs>
+          <radialGradient id="bHeartGrad" cx="30%" cy="30%">
+            <stop offset="0%" stop-color="#ff69b4"/>
+            <stop offset="50%" stop-color="#ff0033"/>
+            <stop offset="100%" stop-color="#8b0000"/>
+          </radialGradient>
+        </defs>
+        <path d="M50 85 C50 85, 10 55, 10 30 C10 15, 25 5, 40 15 C45 20, 50 25, 50 25 C50 25, 55 20, 60 15 C75 5, 90 15, 90 30 C90 55, 50 85, 50 85Z" 
+              fill="url(#bHeartGrad)" stroke="#ff69b4" stroke-width="1.5"/>
+      </svg>
+      <div class="btn-text">🎬 Смотреть<br>видео</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VIDEO SCREEN ===== -->
+<div id="videoScreen" class="screen">
+  <div class="video-wrapper">
+    <video id="loveVideo1" controls playsinline>
+      <source src="video/video_2026-07-18_03-16-21.mp4" type="video/mp4">
+      Ваш браузер не поддерживает видео.
+    </video>
+    <video id="loveVideo2" controls playsinline style="display:none;">
+      <source src="video/video_2026-07-18_03-14-46.mp4" type="video/mp4">
+      Ваш браузер не поддерживает видео.
+    </video>
+    <div class="video-progress" id="videoProgress">▶️ Видео <span id="videoCounter">1</span> из 2</div>
+  </div>
+</div>
+
+<!-- ===== FIREWORKS ===== -->
+<div id="fireworksScreen" class="screen">
+  <canvas id="fireworksCanvas"></canvas>
+  <div id="finalText">
+    <div class="final-text">Я ❤️ ТЕБЯ</div>
+  </div>
+  <div class="floating-hearts" id="floatingHearts"></div>
+</div>
+
+<!-- ===== ZOOM ===== -->
+<div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom()">
+  <img id="zoomImage" src="">
+</div>
+
+<script>
+/* ==================== СЧЁТЧИК ДНЕЙ ==================== */
+function updateDayCounter() {{
+  const start = new Date('{START_DATE}');
+  const now = new Date();
+  const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  document.getElementById('daysCount').textContent = diff;
+  document.getElementById('dayCounter').classList.add('show');
+}}
+updateDayCounter();
+
+/* ==================== MATRIX ==================== */
+const matrixCanvas = document.getElementById('matrixCanvas');
+const matrixCtx = matrixCanvas.getContext('2d');
+let matrixW, matrixH;
+
+function resizeMatrix() {{
+  matrixW = matrixCanvas.width = window.innerWidth;
+  matrixH = matrixCanvas.height = window.innerHeight;
+}}
+resizeMatrix();
+window.addEventListener('resize', resizeMatrix);
+
+const FONT_SIZE = 16;
+const cols = Math.floor(window.innerWidth / FONT_SIZE);
+const drops = Array(cols).fill(0);
+const chars = '♥♡❤💕💖💗💓💘💝💟🔥✨';
+const speeds = Array(cols).fill(0).map(() => 0.5 + Math.random() * 0.8);
+
+function drawMatrix() {{
+  matrixCtx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+  matrixCtx.fillRect(0, 0, matrixW, matrixH);
+  
+  for (let i = 0; i < drops.length; i++) {{
+    const gradient = Math.random();
+    let color;
+    if (gradient < 0.33) color = '#ff4500';
+    else if (gradient < 0.66) color = '#ff0033';
+    else color = '#ff69b4';
+    
+    matrixCtx.fillStyle = color;
+    matrixCtx.shadowColor = color;
+    matrixCtx.shadowBlur = 8;
+    matrixCtx.font = `${{FONT_SIZE + Math.random() * 4}}px 'Courier New', monospace`;
+    
+    const text = chars[Math.floor(Math.random() * chars.length)];
+    const x = i * FONT_SIZE;
+    const y = drops[i] * FONT_SIZE;
+    
+    matrixCtx.fillText(text, x, y);
+    matrixCtx.shadowBlur = 0;
+    
+    drops[i] += speeds[i] * 0.5;
+    
+    if (drops[i] * FONT_SIZE > matrixH + 20 && Math.random() > 0.975) {{
+      drops[i] = 0;
+      speeds[i] = 0.5 + Math.random() * 0.8;
+    }}
+  }}
+}}
+
+let matrixInterval = setInterval(drawMatrix, 35);
+
+/* ==================== ОГНЕННЫЕ ЧАСТИЦЫ ==================== */
+function createFlameParticles() {{
+  const container = document.getElementById('flameParticles');
+  for (let i = 0; i < 50; i++) {{
+    const flame = document.createElement('div');
+    flame.className = 'flame';
+    flame.style.left = Math.random() * 100 + '%';
+    flame.style.animationDelay = Math.random() * 3 + 's';
+    flame.style.width = (2 + Math.random() * 6) + 'px';
+    flame.style.height = flame.style.width;
+    flame.style.animationDuration = (2 + Math.random() * 2) + 's';
+    const colors = ['#ff4500', '#ff0033', '#ff69b4', '#ffaa00'];
+    flame.style.background = `radial-gradient(circle, ${{colors[Math.floor(Math.random() * colors.length)]}}, #ff0033)`;
+    container.appendChild(flame);
+  }}
+}}
+createFlameParticles();
+
+/* ==================== ИСКРЫ ==================== */
+function spawnSparks() {{
+  const container = document.getElementById('sparkContainer');
+  const heart = document.getElementById('matrixHeart');
+  const rect = heart.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  
+  for (let i = 0; i < 20; i++) {{
+    const spark = document.createElement('div');
+    spark.className = 'spark';
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 50 + Math.random() * 100;
+    spark.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+    spark.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+    spark.style.left = (cx - 2) + 'px';
+    spark.style.top = (cy - 2) + 'px';
+    const colors = ['#ff69b4', '#ff0033', '#ff4500', '#ffaa00', '#ff1493'];
+    spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+    spark.style.width = (3 + Math.random() * 5) + 'px';
+    spark.style.height = spark.style.width;
+    spark.style.boxShadow = `0 0 10px ${{spark.style.background}}`;
+    spark.style.animationDuration = (0.6 + Math.random() * 0.6) + 's';
+    container.appendChild(spark);
+    setTimeout(() => spark.remove(), 1200);
+  }}
+}}
+
+/* ==================== СМЕНА ЦВЕТА СЕРДЦА ==================== */
+function changeHeartColor() {{
+  const color1 = `hsl(${{330 + Math.sin(Date.now() * 0.002) * 20}}, 100%, ${{65 + Math.sin(Date.now() * 0.003) * 15}}%)`;
+  const color2 = `hsl(${{340 + Math.sin(Date.now() * 0.0025) * 15}}, 100%, 50%)`;
+  const color3 = `hsl(340, 100%, ${{25 + Math.sin(Date.now() * 0.002) * 10}}%)`;
+  
+  document.getElementById('heartColor1').setAttribute('stop-color', color1);
+  document.getElementById('heartColor2').setAttribute('stop-color', color2);
+  document.getElementById('heartColor3').setAttribute('stop-color', color3);
+  
+  const path = document.getElementById('heartPath');
+  if (path) {{
+    path.setAttribute('stroke', color2);
+  }}
+  requestAnimationFrame(changeHeartColor);
+}}
+changeHeartColor();
+
+/* ==================== ВСПЛЫВАЮЩИЕ СООБЩЕНИЯ ==================== */
+const loveMessages = [
+  '❤️ Люблю тебя!', '💕 Ты моя вселенная!', '💖 Ты прекрасна!',
+  '💗 Моё сердце твоё!', '💝 Ты лучшая!', '✨ Ты моя звезда!',
+  '🌹 Ты моя роза!', '💫 Ты особенная!', '❤️‍🔥 Я твой навсегда!'
+];
+
+document.addEventListener('click', function(e) {{
+  const msg = document.createElement('div');
+  msg.className = 'floating-message';
+  msg.textContent = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+  msg.style.left = (e.clientX - 50) + 'px';
+  msg.style.top = (e.clientY - 20) + 'px';
+  msg.style.fontSize = (20 + Math.random() * 20) + 'px';
+  msg.style.color = ['#ff69b4', '#ff1493', '#ff0033', '#ff4500'][Math.floor(Math.random() * 4)];
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 2500);
+}});
+
+/* ==================== НАВИГАЦИЯ ==================== */
+function showScreen(id) {{
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}}
+
+function showCinema(callback) {{
+  document.getElementById('cinemaTop').classList.add('active');
+  document.getElementById('cinemaBottom').classList.add('active');
+  document.getElementById('cinemaOverlay').classList.add('active');
+  setTimeout(() => {{
+    callback();
+    setTimeout(() => {{
+      document.getElementById('cinemaTop').classList.remove('active');
+      document.getElementById('cinemaBottom').classList.remove('active');
+      document.getElementById('cinemaOverlay').classList.remove('active');
+    }}, 500);
+  }}, 500);
+}}
+
+function showEnvelope() {{
+  clearInterval(matrixInterval);
+  showCinema(() => {{
+    showScreen('envelopeScreen');
+  }});
+}}
+
+/* ==================== КОНВЕРТ (ИГРА) ==================== */
+let clickCount = 0;
+const TOTAL_CLICKS = 100;
+let envelopeOpened = false;
+
+function spawnSparkle(x, y) {{
+  const container = document.getElementById('sparkContainer');
+  const colors = ['#ff69b4', '#ff1493', '#ff0033', '#ffaa00', '#ff4500', '#ff99cc', '#ff5e78'];
+  
+  for (let i = 0; i < 8; i++) {{
+    const spark = document.createElement('div');
+    spark.className = 'spark';
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 30 + Math.random() * 70;
+    spark.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+    spark.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+    spark.style.left = (x - 2) + 'px';
+    spark.style.top = (y - 2) + 'px';
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    spark.style.background = color;
+    spark.style.boxShadow = `0 0 15px ${{color}}`;
+    spark.style.width = (3 + Math.random() * 6) + 'px';
+    spark.style.height = spark.style.width;
+    spark.style.animationDuration = (0.5 + Math.random() * 0.5) + 's';
+    container.appendChild(spark);
+    setTimeout(() => spark.remove(), 1200);
+  }}
+  
+  // Иногда добавляем сердечко
+  if (Math.random() > 0.7) {{
+    const heart = document.createElement('div');
+    heart.className = 'floating-message';
+    heart.textContent = ['❤️', '💕', '💖', '💗', '💓'][Math.floor(Math.random() * 5)];
+    heart.style.left = (x - 15) + 'px';
+    heart.style.top = (y - 20) + 'px';
+    heart.style.fontSize = (20 + Math.random() * 15) + 'px';
+    heart.style.animationDuration = '1.5s';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1500);
+  }}
+}}
+
+function handleEnvelopeClick(event) {{
+  if (envelopeOpened) return;
+  
+  clickCount++;
+  document.getElementById('clicksCount').textContent = clickCount;
+  
+  const progress = (clickCount / TOTAL_CLICKS) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  
+  // ИСКРЫ при каждом клике!
+  const rect = event.currentTarget.getBoundingClientRect();
+  const x = event.clientX || rect.left + rect.width / 2;
+  const y = event.clientY || rect.top + rect.height / 2;
+  spawnSparkle(x, y);
+  
+  // Сообщения
+  const messages = [
+    '💕 Ты только начала...',
+    '💖 Уже почти!',
+    '💗 Ты справляешься!',
+    '💘 Я люблю тебя ❤️',
+    '💝 Ещё чуть-чуть...',
+    '💟 Ты моя вселенная!',
+    '❤️‍🔥 Я обожаю тебя!'
+  ];
+  
+  const msgIndex = Math.min(Math.floor(clickCount / 15), messages.length - 1);
+  document.getElementById('envelopeMessage').textContent = messages[msgIndex];
+  
+  // Эффект "трещин" — конверт постепенно "ломается"
+  const envelope = document.getElementById('envelope');
+  const crackIntensity = Math.min(clickCount / TOTAL_CLICKS, 0.9);
+  const rotateX = (Math.random() - 0.5) * crackIntensity * 6;
+  const rotateY = (Math.random() - 0.5) * crackIntensity * 6;
+  envelope.style.transform = `rotateX(${{rotateX}}deg) rotateY(${{rotateY}}deg)`;
+  
+  // Встряхивание
+  if (clickCount % 5 === 0) {{
+    envelope.style.transition = 'transform 0.1s';
+    setTimeout(() => {{
+      envelope.style.transition = 'transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+    }}, 100);
+  }}
+  
+  // Когда набрано 100 кликов — конверт открывается!
+  if (clickCount >= TOTAL_CLICKS) {{
+    envelopeOpened = true;
+    envelope.classList.add('open');
+    document.getElementById('envelopeMessage').textContent = '🎉 Ты открыла все 100 причин! Читай дальше!';
+    document.getElementById('envelopeMessage').style.color = '#ff1493';
+    document.getElementById('envelopeMessage').style.fontSize = '1.1rem';
+    document.getElementById('clickCounter').innerHTML = '✅ <span style="color:#ff1493;">Все 100 причин открыты!</span>';
+    
+    // Взрыв сердечек
+    for (let i = 0; i < 40; i++) {{
+      setTimeout(() => {{
+        const msg = document.createElement('div');
+        msg.className = 'floating-message';
+        msg.textContent = ['❤️', '💕', '💖', '💗', '💓', '✨', '🌟', '🎉'][Math.floor(Math.random() * 8)];
+        msg.style.left = (Math.random() * window.innerWidth) + 'px';
+        msg.style.top = (Math.random() * window.innerHeight * 0.5) + 'px';
+        msg.style.fontSize = (20 + Math.random() * 30) + 'px';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 2500);
+      }}, i * 80);
+    }}
+    
+    // Через 2 секунды переходим к списку причин
+    setTimeout(() => {{
+      showReasons();
+    }}, 2000);
+  }}
+}}
+
+/* ==================== 100 ПРИЧИН ==================== */
+function showReasons() {{
+  showCinema(() => {{
+    showScreen('reasonsScreen');
+    // Показываем кнопку через 1.5 секунды (она в конце списка, видна полностью)
+    setTimeout(() => {{
+      document.getElementById('reasonsComplete').classList.add('show');
+    }}, 1500);
+  }});
+}}
+
+/* ==================== BOOK ==================== */
+function showBook() {{
+  showCinema(() => {{
+    showScreen('bookScreen');
+    updateBook();
+  }});
+}}
+
+let currentPage = 0;
+const pages = document.querySelectorAll('.page');
+const leftArrow = document.querySelector('.arrow-left');
+const rightArrow = document.querySelector('.arrow-right');
+const heartBtn = document.getElementById('bookHeartBtn');
+
+function updateBook() {{
+  pages.forEach((p, i) => {{
+    p.classList.remove('active', 'prev');
+    if (i === currentPage) p.classList.add('active');
+    else if (i < currentPage) p.classList.add('prev');
+  }});
+
+  leftArrow.classList.toggle('hidden', currentPage === 0);
+  rightArrow.classList.toggle('hidden', currentPage === pages.length - 1);
+
+  if (currentPage === pages.length - 1) {{
+    setTimeout(() => heartBtn.classList.add('show'), 600);
+  }} else {{
+    heartBtn.classList.remove('show');
+  }}
+}}
+
+function nextPage() {{
+  if (currentPage < pages.length - 1) {{ currentPage++; updateBook(); }}
+}}
+function prevPage() {{
+  if (currentPage > 0) {{ currentPage--; updateBook(); }}
+}}
+
+document.addEventListener('keydown', e => {{
+  if (!document.getElementById('bookScreen').classList.contains('active')) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') nextPage();
+  if (e.key === 'ArrowLeft') prevPage();
+}});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', e => {{ touchStartX = e.changedTouches[0].screenX; }});
+document.addEventListener('touchend', e => {{
+  if (!document.getElementById('bookScreen').classList.contains('active')) return;
+  const diff = touchStartX - e.changedTouches[0].screenX;
+  if (Math.abs(diff) > 50) {{
+    diff > 0 ? nextPage() : prevPage();
+  }}
+}});
+
+/* ==================== ZOOM ==================== */
+function zoomImage(img) {{
+  const overlay = document.getElementById('zoomOverlay');
+  const zoomImg = document.getElementById('zoomImage');
+  zoomImg.src = img.src;
+  overlay.classList.add('active');
+}}
+
+function closeZoom() {{
+  document.getElementById('zoomOverlay').classList.remove('active');
+}}
+
+/* ==================== ВИДЕО ==================== */
+let videoIndex = 1;
+
+function showFirstVideo() {{
+  videoIndex = 1;
+  document.getElementById('loveVideo1').style.display = 'block';
+  document.getElementById('loveVideo2').style.display = 'none';
+  document.getElementById('videoCounter').textContent = '1';
+  document.getElementById('videoProgress').style.display = 'block';
+  
+  showCinema(() => {{
+    showScreen('videoScreen');
+    const video1 = document.getElementById('loveVideo1');
+    video1.play().catch(e => console.log('Autoplay blocked:', e));
+    
+    video1.onended = function() {{
+      videoIndex = 2;
+      document.getElementById('loveVideo1').style.display = 'none';
+      document.getElementById('loveVideo2').style.display = 'block';
+      document.getElementById('videoCounter').textContent = '2';
+      
+      const video2 = document.getElementById('loveVideo2');
+      video2.play().catch(e => console.log('Autoplay blocked:', e));
+      
+      video2.onended = showFireworks;
+    }};
+    
+    setTimeout(() => {{
+      const v1 = document.getElementById('loveVideo1');
+      if (v1.paused && v1.currentTime === 0) {{
+        v1.style.cursor = 'pointer';
+        v1.onclick = function() {{
+          v1.play();
+        }};
+      }}
+    }}, 3000);
+  }});
+}}
+
+/* ==================== FIREWORKS ==================== */
+const fwCanvas = document.getElementById('fireworksCanvas');
+const fwCtx = fwCanvas.getContext('2d');
+let fwW, fwH;
+
+function resizeFW() {{
+  fwW = fwCanvas.width = window.innerWidth;
+  fwH = fwCanvas.height = window.innerHeight;
+}}
+resizeFW();
+window.addEventListener('resize', resizeFW);
+
+function heartX(t, scale) {{ return scale * 16 * Math.pow(Math.sin(t), 3); }}
+function heartY(t, scale) {{ return -scale * (13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)); }}
+
+class Particle {{
+  constructor(x, y, targetX, targetY, color, delay, sizeMult) {{
+    this.x = x; this.y = y;
+    this.targetX = targetX; this.targetY = targetY;
+    this.vx = (Math.random() - 0.5) * 20;
+    this.vy = (Math.random() - 0.5) * 20;
+    this.color = color;
+    this.size = (Math.random() * 3 + 1.5) * sizeMult;
+    this.life = 0;
+    this.phase = 'wait';
+    this.delay = delay;
+    this.gatherSpeed = 0.015 + Math.random() * 0.03;
+    this.pulseOffset = Math.random() * Math.PI * 2;
+  }}
+
+  update() {{
+    if (this.phase === 'wait') {{
+      this.delay--;
+      if (this.delay <= 0) {{ this.phase = 'explode'; this.life = 1; }}
+      return;
+    }}
+    if (this.phase === 'explode') {{
+      this.x += this.vx; this.y += this.vy;
+      this.vx *= 0.96; this.vy *= 0.96;
+      this.life -= 0.01;
+      if (this.life <= 0.2) this.phase = 'gather';
+    }} else if (this.phase === 'gather') {{
+      this.x += (this.targetX - this.x) * this.gatherSpeed;
+      this.y += (this.targetY - this.y) * this.gatherSpeed;
+      this.life += 0.01;
+      if (Math.abs(this.x - this.targetX) < 2 && Math.abs(this.y - this.targetY) < 2) {{
+        this.phase = 'pulse';
+      }}
+    }} else {{
+      const time = Date.now() * 0.002;
+      this.x = this.targetX + Math.sin(time + this.pulseOffset) * 2;
+      this.y = this.targetY + Math.cos(time + this.pulseOffset) * 2;
+      this.life = 1;
+    }}
+  }}
+
+  draw() {{
+    if (this.phase === 'wait') return;
+    fwCtx.globalAlpha = Math.max(0.1, Math.min(this.life, 1));
+    
+    const grad = fwCtx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 3);
+    grad.addColorStop(0, this.color);
+    grad.addColorStop(0.5, this.color);
+    grad.addColorStop(1, 'transparent');
+    fwCtx.fillStyle = grad;
+    fwCtx.beginPath();
+    fwCtx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+    fwCtx.fill();
+    
+    fwCtx.fillStyle = this.color;
+    fwCtx.shadowColor = this.color;
+    fwCtx.shadowBlur = 10;
+    fwCtx.beginPath();
+    fwCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    fwCtx.fill();
+    fwCtx.shadowBlur = 0;
+    
+    fwCtx.globalAlpha = 1;
+  }}
+}}
+
+let particles = [];
+let fwAnimationId;
+
+function showFireworks() {{
+  showScreen('fireworksScreen');
+  startFireworks();
+  setTimeout(() => {{
+    createFloatingHearts();
+  }}, 6000);
+}}
+
+function startFireworks() {{
+  particles = [];
+  const colors = ['#ff0033', '#ff3366', '#ff69b4', '#ff99cc', '#ff1493', '#ff0066', '#ff5e78', '#ff8fa3', '#ff1744', '#e91e63', '#ff4081', '#f50057'];
+
+  const heartTargets = [];
+  const cx = fwW / 2, cy = fwH / 2;
+  const scale = Math.min(fwW, fwH) / 30;
+  
+  for (let t = 0; t < Math.PI * 2; t += 0.05) {{
+    heartTargets.push({{
+      x: cx + heartX(t, scale),
+      y: cy + heartY(t, scale) - 20
+    }});
+  }}
+  for (let r = 0.1; r < 0.95; r += 0.1) {{
+    for (let t = 0; t < Math.PI * 2; t += 0.15) {{
+      heartTargets.push({{
+        x: cx + heartX(t, scale) * r,
+        y: cy + heartY(t, scale) * r - 20
+      }});
+    }}
+  }}
+
+  const explosions = 8;
+  for (let e = 0; e < explosions; e++) {{
+    const ex = Math.random() * fwW * 0.8 + fwW * 0.1;
+    const ey = Math.random() * fwH * 0.6 + fwH * 0.05;
+    const count = 35 + Math.floor(Math.random() * 25);
+    for (let i = 0; i < count; i++) {{
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const target = heartTargets[Math.floor(Math.random() * heartTargets.length)];
+      particles.push(new Particle(ex, ey, target.x, target.y, color, e * 12 + Math.random() * 8, 0.8 + Math.random() * 0.6));
+    }}
+  }}
+
+  for (let i = 0; i < 400; i++) {{
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const target = heartTargets[Math.floor(Math.random() * heartTargets.length)];
+    particles.push(new Particle(
+      Math.random() * fwW, Math.random() * fwH,
+      target.x, target.y, color, 80 + Math.random() * 70, 0.7 + Math.random() * 0.8
+    ));
+  }}
+
+  animateFireworks();
+
+  setTimeout(() => {{
+    document.getElementById('finalText').classList.add('show');
+  }}, 5000);
+}}
+
+function animateFireworks() {{
+  fwCtx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+  fwCtx.fillRect(0, 0, fwW, fwH);
+
+  particles.forEach(p => {{ p.update(); p.draw(); }});
+
+  fwAnimationId = requestAnimationFrame(animateFireworks);
+}}
+
+/* ==================== ПЛАВАЮЩИЕ СЕРДЦА ==================== */
+function createFloatingHearts() {{
+  const container = document.getElementById('floatingHearts');
+  container.innerHTML = '';
+  const hearts = ['❤️', '💕', '💖', '💗', '💓', '💘', '💝', '💟', '❤️‍🔥'];
+  
+  for (let i = 0; i < 30; i++) {{
+    const heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.animationDelay = Math.random() * 8 + 's';
+    heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+    heart.style.fontSize = (15 + Math.random() * 25) + 'px';
+    container.appendChild(heart);
+  }}
+}}
+
+setInterval(updateDayCounter, 60000);
+</script>
+</body>
+</html>
+'''
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# СОХРАНЕНИЕ HTML
+# ═══════════════════════════════════════════════════════════════════════════════
+html_path = os.path.join(OUTPUT_DIR, "index.html")
+with open(html_path, "w", encoding="utf-8") as f:
+    f.write(HTML_CONTENT)
+print(f"[OK] Сайт сохранён: {html_path}")
+print(f"[INFO] Сгенерировано {len(REASONS)} причин любви")
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ГЕНЕРАЦИЯ QR-КОДА
+# ═══════════════════════════════════════════════════════════════════════════════
+try:
+    import qrcode
+    import numpy as np
+    from PIL import Image, ImageDraw, ImageFilter
+
+    print("[INFO] Генерация QR-кода в форме сердца...")
+
+    qr = qrcode.QRCode(
+        version=6,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=14,
+        border=2,
+    )
+    qr.add_data(SITE_URL)
+    qr.make(fit=True)
+
+    qr_matrix = np.array(qr.modules, dtype=bool)
+    size = qr_matrix.shape[0]
+
+    heart_mask = np.zeros((size, size), dtype=bool)
+    cx, cy = size // 2, size // 2
+    scale = size / 2.2
+
+    for y in range(size):
+        for x in range(size):
+            nx = (x - cx) / scale
+            ny = (y - cy) / scale
+            x2 = nx * nx
+            y2 = ny * ny
+            if (x2 + y2 - 1) ** 3 - x2 * (ny ** 3) <= 0:
+                heart_mask[y, x] = True
+
+    heart_qr = np.zeros((size, size), dtype=bool)
+    for y in range(size):
+        for x in range(size):
+            if heart_mask[y, x] and qr_matrix[y, x]:
+                heart_qr[y, x] = True
+
+    pixel_size = 14
+    img_size = size * pixel_size
+    img = Image.new("RGB", (img_size, img_size), "#000000")
+    draw = ImageDraw.Draw(img)
+
+    qr_color = "#ff0033"
+    for y in range(size):
+        for x in range(size):
+            if heart_qr[y, x]:
+                x1 = x * pixel_size
+                y1 = y * pixel_size
+                x2 = x1 + pixel_size
+                y2 = y1 + pixel_size
+                draw.rectangle([x1, y1, x2, y2], fill=qr_color)
+
+    edge_color = "#ff3366"
+    for y in range(1, size - 1):
+        for x in range(1, size - 1):
+            if heart_mask[y, x]:
+                if not (heart_mask[y-1, x] and heart_mask[y+1, x] and 
+                        heart_mask[y, x-1] and heart_mask[y, x+1]):
+                    if not heart_qr[y, x]:
+                        x1 = x * pixel_size
+                        y1 = y * pixel_size
+                        x2 = x1 + pixel_size
+                        y2 = y1 + pixel_size
+                        draw.rectangle([x1, y1, x2, y2], fill=edge_color)
+
+    img = img.filter(ImageFilter.GaussianBlur(radius=0.8))
+
+    bbox = None
+    for y in range(size):
+        for x in range(size):
+            if heart_mask[y, x]:
+                if bbox is None:
+                    bbox = [x, y, x, y]
+                else:
+                    bbox[0] = min(bbox[0], x)
+                    bbox[1] = min(bbox[1], y)
+                    bbox[2] = max(bbox[2], x)
+                    bbox[3] = max(bbox[3], y)
+
+    if bbox:
+        padding = 2
+        bbox[0] = max(0, bbox[0] - padding)
+        bbox[1] = max(0, bbox[1] - padding)
+        bbox[2] = min(size - 1, bbox[2] + padding)
+        bbox[3] = min(size - 1, bbox[3] + padding)
+
+        x1 = bbox[0] * pixel_size
+        y1 = bbox[1] * pixel_size
+        x2 = (bbox[2] + 1) * pixel_size
+        y2 = (bbox[3] + 1) * pixel_size
+        img = img.crop((x1, y1, x2, y2))
+
+    qr_path = os.path.join(OUTPUT_DIR, "qr_heart.png")
+    img.save(qr_path, "PNG", quality=100)
+    print(f"[OK] QR-код сохранён: {qr_path}")
+    print(f"[INFO] Размер: {img.size[0]}x{img.size[1]} пикселей")
+    print(f"[INFO] Ведёт на: {SITE_URL}")
+
+except ImportError as e:
+    print(f"[WARN] Не хватает библиотек: {e}")
+    print("[INFO] Установите: pip install qrcode[pil] numpy")
+except Exception as e:
+    print(f"[ERROR] QR-код: {e}")
+
